@@ -17,18 +17,22 @@ const agesubmithandler= async(e)=>{
   const currentYear = new Date().getFullYear();
 
 
-  if(currentmonth>=month){
-    let approxAge = currentYear - year;
+if(currentmonth>=month){
+    let approxAge = (currentYear - year);
 
   let age= approxAge+1
+
   setCurrent(age) 
 }else{
   
   let approxAge = currentYear - year;
 
   let age= approxAge*-1
-  setCurrent(age)
+   let newAge= age*-1
+  
+  setCurrent(newAge) 
   }
+
 
 
 setUserAge(" ")
