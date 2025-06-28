@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion, number } from 'framer-motion';
 import { useState } from 'react';
 import { data, Link } from 'react-router-dom';
 import { celebData } from "./Celebs";
@@ -9,33 +9,27 @@ export default function AgeCalculator() {
   
 const agesubmithandler= async(e)=>{
   e.preventDefault();
-  const [year, month, day] = UserAge.split("-");
+  const [year, month, day] = UserAge.split("-").map(Number);
   const today = new Date();
-  const currentmonth=today.getMonth() + 1
+  const currentMonth=today.getMonth() + 1
   const currentDay = today.getDate();
   // const userMonth= month-currentmonth
   const currentYear = new Date().getFullYear();
 
 
-if(currentmonth>=month){
-    let approxAge = (currentYear - year);
+   let age = currentYear - year;
 
-  let age= approxAge+1
-
-  setCurrent(age) 
-}else{
   
-  let approxAge = currentYear - year;
-
-  let age= approxAge*-1
-   let newAge= age*-1
-  
-  setCurrent(newAge) 
+  if (
+    currentMonth < month ||
+    (currentMonth === month && currentDay < day)
+  ) {
+    age -= 1;
   }
 
+  setCurrent(age);
+  setUserAge("");
 
-
-setUserAge(" ")
     const formattedMonth = parseInt(month, 10);
     const celebList = celebData[formattedMonth] || [];
 
@@ -49,22 +43,19 @@ setUserAge(" ")
   return (
    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-purple-800 via-indigo-800 to-blue-700 text-white px-4 relative">
 
-      {/* 🔒 Top-right buttons */}
       <div className="absolute top-6 right-6 flex gap-4">
         <button className="bg-white text-indigo-800 px-4 py-2 rounded-xl font-semibold hover:bg-gray-100 transition duration-300 cursor-pointer">
           <Link to="/Login">Login</Link>
         </button>
         <button className="bg-indigo-500 text-white px-4 py-2 rounded-xl font-semibold hover:bg-indigo-600 transition duration-300 cursor-pointer">
-          Profile
+        <Link to='/Profile'>Profile</Link>  
         </button>
       </div>
 
-      {/* 🔮 Main Heading */}
       <h1 className="mb-14 text-white font-bold text-3xl text-center">
         Your Birthdate Is Special — See Who Shares It!
       </h1>
 
-      {/* 🎉 Card UI */}
       <motion.div
         initial={{ opacity: 0, y: -60 }}
         animate={{ opacity: 1, y: 0 }}
