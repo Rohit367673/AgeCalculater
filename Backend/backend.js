@@ -37,7 +37,10 @@ app.post("/Signup",async (req,res)=>{
    const user= await userModel.create({Name,Email,Password:hashPass})
  
    const token = jwt.sign({ userId: user._id }, JWT_SECRET);
-   res.status(200).send({message:"success",id: user._id, token})
+   res.status(200).send({message:"success",   user: {
+        Name: user.Name,
+        _id: user._id,
+      }, token})
 
 }catch(error){
         console.error("Registration error:", error);

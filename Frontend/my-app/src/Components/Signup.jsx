@@ -1,8 +1,10 @@
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { useAuth } from './AuthContext';
 
 export default function Signup() {
+  const {Login}= useAuth();
  const navigate= useNavigate()
     const [Name, setName] = useState("");
   const [Email, setEmail] = useState("");
@@ -22,7 +24,11 @@ export default function Signup() {
     .then((res) => res.json())
   .then((data) => {
     if (data.message === "success") {
-      alert(`Welcome ${data.user.Name}`);
+      
+      const {user,token}= data;
+      
+      Login({...user,...token})
+      alert(`Welcome ${user.Name}`);
       navigate("/");
     }
   })
@@ -32,7 +38,16 @@ export default function Signup() {
 }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-800 via-indigo-800 to-blue-700 text-black px-4">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-800 via-indigo-800 to-blue-700 text-black px-4 relative">
+
+      {/* 🔙 Back Button */}
+      <button
+        onClick={() => navigate("/")}
+        className="absolute top-6 left-6 text-white flex items-center space-x-2 hover:font-bold cursor-pointer"
+      >
+        <span className="text-xl cursor-pointer">←</span>
+        <span>Home</span>
+      </button>    
       <motion.div
         initial={{ opacity: 0, y: -60 }}
         animate={{ opacity: 1, y: 0 }}
